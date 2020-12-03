@@ -1,0 +1,33 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: Helvetica Neue,Helvetica,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,sans-serif;;
+    /* 设置文字不可选中 */
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+html,body{
+    /* 设置段落的最小宽度 */
+    min-width: 1200px;
+    background-color: #1b2838;
+}
+
+a{
+    text-decoration: none;
+}
+a:link{
+    color: #c1c1c1;
+}
+a:visited{
+    color: #c1c1c1;
+}
+a:hover{
+    cursor: pointer;
+    text-decoration: none;
+}
+a:active{
+    color: #ffffff;
+}
