@@ -56,7 +56,7 @@ export default {
   .homeNav{
     width: 940px;
     height: 35px;
-    margin: 32px auto;
+    margin: 0px auto;
     box-shadow: 0 0 3px rgba(0,0,0,0.4);
     background-color: #377096;
 
@@ -83,11 +83,13 @@ export default {
         }
         &:hover>.nav_item_desktop{
           opacity: 1;
+          visibility: visible;
           transition: opacity 0.25s;
         }
         /* 下拉导航栏 */
         .nav_item_desktop{
           transition: opacity 0.25s;
+          visibility: hidden;
           opacity: 0;
           position: absolute;
           left: 0px;

@@ -53,6 +53,7 @@ export default {
   .classificationBox{
     width: 210px;
     height: 800px;
+    // float: left;//是绝对定位的原因吗窗口一锁小会跟着跑缩小就看不见左边那个
     position: absolute;
     left: 248px;
     top: 24px;
