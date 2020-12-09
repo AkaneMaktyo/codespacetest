@@ -42,6 +42,7 @@ export default {
     background-color: #121a25;
     padding-top: 1px;
     box-sizing: border-box;
+    margin-top: 100px;
     .footer_content_top{
       color: #8f98a0;
       font-size: 12px;

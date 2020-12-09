@@ -1,14 +1,17 @@
 <template>
   <div class="index">
     <HeaderBox></HeaderBox>
-    <div class="steam-content">
-      <ClassificationBox></ClassificationBox>
-      <div class="middle_right">
+    <ClassificationBox></ClassificationBox>
+    <div class="home_page_body">
+      <div class="home_page_carousel">
         <HomeNav></HomeNav>
+        <PanelTitle :panel-title="panelTitle.first.panelTitle" :panel-button="panelTitle.first.panelButton"></PanelTitle>
         <GamePanelMax></GamePanelMax>
       </div>
-<!--      <GamePanelDiscount></GamePanelDiscount>-->
+      <PanelTitle :panel-title="panelTitle.second.panelTitle" :panel-button="panelTitle.second.panelButton"></PanelTitle>
+      <GamePanelDiscount></GamePanelDiscount>
     </div>
+
     <FooterBox></FooterBox>
   </div>
 </template>
@@ -17,30 +20,47 @@
 import HeaderBox from "@/components/commen/headerbox/HeaderBox";
 import HomeNav from "@/components/commen/homeNav/HomeNav";
 import ClassificationBox from "@/components/home/classification/ClassificationBox";
-import GamePanelMax from "@/components/commen/gamepanel/GamePanelMax";
 import GamePanelDiscount from "@/components/commen/gamepanel/GamePanelDiscount";
 import FooterBox from "@/components/commen/footerbox/FooterBox";
+import PanelTitle from "@/components/commen/panelTitle/PanelTitle";
+import GamePanelMax from "@/components/commen/gamepanel/GamePanelMax";
 
 export default {
   name: "index",
-  components: {FooterBox, GamePanelDiscount, GamePanelMax, ClassificationBox, HomeNav, HeaderBox}
+  components: { GamePanelMax, PanelTitle, FooterBox, GamePanelDiscount,  ClassificationBox, HomeNav, HeaderBox},
+  data(){
+    return{
+      panelTitle:{
+        first:{
+          panelTitle:'精选和推荐',
+          panelButton:'浏览更多',
+        },
+        second:{
+          panelTitle:'特别优惠',
+          panelButton:'浏览更多',
+        }
+      }
+    }
+  }
 }
 </script>
 
 <style lang="scss">
   .index{
-    position: relative;
-    .steam-content{
+    .home_page_body{
       //height: 800px;
       width: 100%;
-      height: 820px;
+      min-height: 800px;
       z-index: 1;
-      position: relative;
-      overflow: hidden;
+      //position: relative;
       background: url("/resources/background/indexbackground.png") center top no-repeat #1b2838;
-      .middle_right{
-        margin-right: 0px;
+      .home_page_carousel{
         padding-top: 32px;
+        width: 940px;
+        height: 500px;
+        margin: -1px 482px;
+
+        //margin: 100px 100px 0 0;
       }
     }
   }
