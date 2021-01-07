@@ -41,12 +41,12 @@
             </div>
 
             <div class="content_bottom">
-              <div v-show="item.discount == 1" class="content_bottom_price">￥ {{ item.price }}</div>
+              <div v-show="item.discount == 1" class="content_bottom_price">¥ {{ item.price }}</div>
               <!-- 打折信息 -->
               <div v-show="item.discount != 1" class="content_bottom_price_discount">
                 <div class="discount">-{{ 100-(item.discount*100) }}%</div>
-                <div class="original_price">￥{{ item.price }}</div>
-                ￥{{ item.price*item.discount|numFilter }}
+                <div class="original_price">¥{{ item.price }}</div>
+                ¥{{ item.price*item.discount|numFilter }}
               </div>
               <!-- 平台图标切换，支持win和苹果 -->
               <div class="content_platform" v-show="item.platform=='1'">
@@ -64,13 +64,13 @@
           </div>
 
         <!-- 右侧弹出层 -->
-        <div  ref="switchPanel" class="content_popUp">
+        <div ref="switchPanel" class="content_popUp">
           <div class="game_info">
             <div class="game_info_name">{{ item.name }}</div>
             <div class="game_info_publicTime">发行于：{{ item.publicTime }}</div>
           </div>
           <div class="game_info_img">
-            <img :src="item.img0" >
+            <img ref="switchImg" :src="item.img0" >
           </div>
           <div class="game_info_evaluation">
             <div>总体用户评测：</div>
@@ -85,6 +85,7 @@
           </div>
           <div class="triangle"></div>
         </div>
+
       </div>
 
       </swiper-slide>
@@ -129,6 +130,16 @@ export default {
           bulletClass:'my-bullet',  //自定义分页器样式
           bulletActiveClass:'my-bullet-active',   //分页器生成的激活时的类
         },
+        //change事件监听
+        on:{
+          //当轮播图改变的时候调用
+          slideChange: function (){
+            /* this.slides.length长度 加上前进后退按钮 */
+            if (this.activeIndex == this.slides.length-1){
+              this.activeIndex = 1
+            }
+          }
+        }
       },
       swiperSlideList:[
         {
@@ -223,18 +234,35 @@ export default {
           discount:0.2,
           platform:1,
         },
+        {
+          href:'',
+          img0:'/resources/game/命运2/命运2 0.jpg',
+          name:'命运2',
+          img1:'/resources/game/命运2/命运2 1.jpg',
+          img2:'/resources/game/命运2/命运2 2.jpg',
+          img3:'/resources/game/命运2/命运2 3.jpg',
+          img4:'/resources/game/命运2/命运2 4.jpg',
+          classification:'热销商品',
+          price:'126',
+          discount:0.75,
+          platform:1,
+        },
+        {
+          href:'',
+          img0:'/resources/game/怪物猎人：冰原大师版/怪物猎人：冰原大师版 0.jpg',
+          name:'怪物猎人：冰原大师版',
+          img1:'/resources/game/怪物猎人：冰原大师版/怪物猎人：冰原大师版 1.jpg',
+          img2:'/resources/game/怪物猎人：冰原大师版/怪物猎人：冰原大师版 2.jpg',
+          img3:'/resources/game/怪物猎人：冰原大师版/怪物猎人：冰原大师版 3.jpg',
+          img4:'/resources/game/怪物猎人：冰原大师版/怪物猎人：冰原大师版 4.jpg',
+          classification:'热销商品',
+          price:'271',
+          discount:0.62,
+          platform:1,
+        },
       ],
 
-      //change事件监听
-      on:{
-        //当轮播图改变的时候调用
-        slideNextTransitionStart: function (){
-          alert('this.activeIndex');
-          if (this.activeIndex == 5){
-            this.activeIndex = 1;
-          }
-        }
-      }
+
     }
   },
   created() {
@@ -244,7 +272,7 @@ export default {
   filters: {
     numFilter(value) {
       // 截取当前数据到小数点后两位
-      let realVal = Number(value).toFixed(2)
+      let realVal = Number(value).toFixed(0)
       // num.toFixed(2)获取的是字符串
       return Number(realVal)
     }
@@ -252,11 +280,11 @@ export default {
   methods:{
     hiddenButton(name){
       this.$refs[name].style.visibility = 'hidden';
-      // console.log(this.$refs[name].style.visibility)
+      // setInterval(this.switchImg,1000)
     },
     showButton(name){
       this.$refs[name].style.visibility = 'visible';
-      // console.log(this.$refs[name].style.visibility)
+      // clearInterval()
     },
     previewImg(index,src){
       temp = vm.swiperSlideList[index].img0;
@@ -264,19 +292,11 @@ export default {
     },
     rollbackImg(index){
       vm.swiperSlideList[index].img0 = temp;
+    },
+    switchImg(){
+      this.$refs.switchImg[0].src = '/resources/game/糖豆人/糖豆人 1.jpg'
     }
-    // animationShow(name){
-    //   this.$refs[name].style.display = 'block';
-    //   this.$refs[name].style.display;
-    //   this.$refs[name].style.opacity = '1';
-    // },
-    // animationHidden(name){
-    //   this.$refs[name].style.transition = 'opacity 0.25s'
-    //   this.$refs[name].style.opacity = '0'
-    //   setTimeout(function (){
-    //     this.$refs[name].style.display = 'none'
-    //   },250)
-    // }
+
   }
 }
 </script>
@@ -337,10 +357,20 @@ export default {
       box-sizing: border-box;
       &:hover .content_popUp{
         //visibility: visible;
-         opacity: 1;
-        transition: opacity 0.25s;
+        opacity: 1;
+        //transition: opacity(1) .5s;
         display: block;
+        animation: mydisplay 0.5s;
+      }
 
+      @keyframes mydisplay {
+        0%{
+          opacity: 0;
+        }
+
+        100%{
+          opacity: 1;
+        }
       }
 
       img{

@@ -10,6 +10,9 @@
       </div>
       <PanelTitle :panel-title="panelTitle.second.panelTitle" :panel-button="panelTitle.second.panelButton"></PanelTitle>
       <GamePanelDiscount></GamePanelDiscount>
+      <PanelTitle :panel-title="panelTitle.third.panelTitle" :panel-button="panelTitle.third.panelButton"></PanelTitle>
+      <CommunityRecommendation></CommunityRecommendation>
+      <GamePanelRow></GamePanelRow>
     </div>
 
     <FooterBox></FooterBox>
@@ -24,10 +27,14 @@ import GamePanelDiscount from "@/components/commen/gamepanel/GamePanelDiscount";
 import FooterBox from "@/components/commen/footerbox/FooterBox";
 import PanelTitle from "@/components/commen/panelTitle/PanelTitle";
 import GamePanelMax from "@/components/commen/gamepanel/GamePanelMax";
+import CommunityRecommendation from "@/components/commen/gamepanel/CommunityRecommendation";
+import GamePanelRow from "@/components/commen/gamepanel/GamePanelRow";
 
 export default {
   name: "index",
-  components: { GamePanelMax, PanelTitle, FooterBox, GamePanelDiscount,  ClassificationBox, HomeNav, HeaderBox},
+  components: {
+    GamePanelRow,
+    CommunityRecommendation, GamePanelMax, PanelTitle, FooterBox, GamePanelDiscount,  ClassificationBox, HomeNav, HeaderBox},
   data(){
     return{
       panelTitle:{
@@ -38,10 +45,14 @@ export default {
         second:{
           panelTitle:'特别优惠',
           panelButton:'浏览更多',
+        },
+        third:{
+          panelTitle:'社区推荐',
+          panelButton:'按标签和更多方式进行自定义和探索',
         }
       }
     }
-  }
+  },
 }
 </script>
 

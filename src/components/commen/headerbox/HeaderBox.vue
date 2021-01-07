@@ -1,7 +1,11 @@
 <template>
 <div class="header">
   <div class="content">
-    <div class="logo"></div>
+
+    <router-link to="/index">
+      <div class="logo"></div>
+    </router-link>
+    
     <div class="nav">
       <div class="item item_hover">
         商店
@@ -37,7 +41,7 @@
       <div class="install hover_item">
         <i class="fa fa-download" aria-hidden="true"></i> 安装Steam
       </div>
-      <div class="login hover_item" >登录</div>
+      <div class="login hover_item" @click="toLogin">登录</div>
       <div class="language hover_item" >语言 <i class="fa fa-caret-down" aria-hidden="true"></i></div>
     </div>
   </div>
@@ -47,7 +51,12 @@
 
 <script>
 export default {
-  name: "HeaderBox"
+  name: "HeaderBox",
+  methods:{
+    toLogin(){
+      this.$router.push("/login")
+    }
+  }
 }
 </script>
 
