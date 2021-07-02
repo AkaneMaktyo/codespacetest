@@ -6,12 +6,6 @@ import VueAwesomeSwiper from "vue-awesome-swiper";
 import ElementUI from 'element-ui'
 import axios from "axios";
 import VueAxios from "vue-axios";
-// mock的开关
- const mock = true;
- if(mock){
-     require('./mock/mock')
- }
-
 import 'font-awesome/css/font-awesome.css'
 import './assets/css/default.css'
 import 'swiper/css/swiper.css'
@@ -22,10 +16,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 Vue.config.productionTip = false
 Vue.use(VueAwesomeSwiper)
 Vue.use(ElementUI)
-Vue.prototype.$ajax = axios
+Vue.prototype.axios = axios
 Vue.use(VueAxios,axios)
 
-
+axios.defaults.baseURL = "http://127.0.0.1:8000"
 
 new Vue({
   router,

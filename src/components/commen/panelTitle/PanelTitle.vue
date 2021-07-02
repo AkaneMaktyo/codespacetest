@@ -16,15 +16,15 @@ export default {
     panelButton:String
   },
   created() {
-   this.hello();
+   // this.hello()
   },
   methods: {
-    // async hello() {
-    //   hello().then((value => {
-    //     const { data } = value
-    //     console.log(data)
-    //   }))
-    // }
+    async hello() {
+      hello().then((value => {
+        const { data } = value
+        console.log(data)
+      }))
+    }
   }
 }
 </script>
