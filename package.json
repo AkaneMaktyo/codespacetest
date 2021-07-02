@@ -9,11 +9,12 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "element-plus": "^1.0.2-beta.54",
     "element-ui": "^2.14.1",
     "font-awesome": "^4.7.0",
     "mockjs": "^1.1.0",
     "node-sass": "^5.0.0",
-    "sass-loader": "^10.1.0",
+    "sass-loader": "^10.2.0",
     "swiper": "^5.4.1",
     "v-click-outside-x": "^4.1.0",
     "vue": "^2.6.11",

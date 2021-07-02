@@ -6,11 +6,25 @@
 </template>
 
 <script>
+import axios from "axios";
+import {hello} from "@/api/billboard";
+
 export default {
   name: "PanelTitle",
   props:{
     panelTitle:String,
     panelButton:String
+  },
+  created() {
+   this.hello();
+  },
+  methods: {
+    // async hello() {
+    //   hello().then((value => {
+    //     const { data } = value
+    //     console.log(data)
+    //   }))
+    // }
   }
 }
 </script>
