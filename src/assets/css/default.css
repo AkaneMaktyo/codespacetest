@@ -11,7 +11,7 @@
 
 html,body{
     /* 设置段落的最小宽度 , 同级元素 ， 尽量不要产生相互影响 */
-    min-width: 1900px;
+    /*min-width: 1900px;*/
     background-color: #1b2838;
     /*height: 100%;*/
     width: 100%;

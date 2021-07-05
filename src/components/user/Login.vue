@@ -28,7 +28,7 @@
             </div>
 
             <el-form-item>
-              <el-button type="submit" class="loginButton" @click="login()">注册</el-button>
+              <el-button type="submit" class="loginButton" @click="login()">登录</el-button>
           </el-form-item>
 
             <div class="forgetPassword">忘记您的密码？</div>
