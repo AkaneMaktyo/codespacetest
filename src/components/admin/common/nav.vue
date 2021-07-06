@@ -1,14 +1,17 @@
 <template>
-  <!--左侧导航栏-->
-  <el-aside width="200px" class="aside">
-    <el-menu :default-active="$router.path" exact  router>
+  <div class="nav">
+    <div class="logo"></div>
+    <!--左侧导航栏-->
+    <el-aside width="224px">
+      <el-menu :default-active="$router.path" exact  router>
 
-    <!--当使用 PascalCase (首字母大写命名) 定义一个组件时，你在引用这个自定义元素时两种命名法都可以使用。也就是说 和 都是可接受的。注意，尽管如此，直接在 DOM (即非字符串的模板) 中使用时只有 kebab-case 是有效的。-->
-    <nav-item  v-for="v in items" :key="v.url" :item="v" :basePath="v.url"/>
+        <!--当使用 PascalCase (首字母大写命名) 定义一个组件时，你在引用这个自定义元素时两种命名法都可以使用。也就是说 和 都是可接受的。注意，尽管如此，直接在 DOM (即非字符串的模板) 中使用时只有 kebab-case 是有效的。-->
+        <nav-item class="nav_item"  v-for="v in items" :key="v.url" :item="v" :basePath="v.url"/>
 
-    </el-menu>
+      </el-menu>
 
-  </el-aside>
+    </el-aside>
+  </div>
 </template>
 
 <script>
@@ -48,14 +51,48 @@ export default {
 </script>
 
 <style lang="scss">
-  .el-menu{
-    background-color: white;
+
+  .nav{
+    background-color: #171A21;
+  }
+
+  .logo{
+    width: 160px;
+    height: 50px;
+    margin: 20px 0 -0px 40px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-image: url(/resources/header/logo.png);
+    display: inline-block;
   }
 
   .el-aside {
     background-color: white;
-    //color: #ce2f2f;
+    color: #b8b6b4;
     line-height: 200px;
+    span{
+      color: #b8b6b4;
+    }
   }
+
+
+  .el-menu{
+    background-color: #171A21;
+    border-right-width: 0;    // 边界不齐 有 1px 的偏差
+
+    .nav_item{
+      color: black;
+    }
+
+    .el-menu-item:hover ,.el-submenu__title:hover{
+      outline: 0;
+      background-color: #E9EEF3;
+      span{
+        color: black;
+      }
+    }
+  }
+
+
 
 </style>

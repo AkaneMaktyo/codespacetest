@@ -9,19 +9,17 @@
         <!--头部-->
         <el-header>
 
-          <!-- 面包屑-->
-          <el-breadcrumb separator="/">
-            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item><a href="/">活动管理</a></el-breadcrumb-item>
-            <el-breadcrumb-item>活动列表</el-breadcrumb-item>
-            <el-breadcrumb-item>活动详情</el-breadcrumb-item>
-          </el-breadcrumb>
-
           <!-- 退出 -->
           <el-button type="primary" @click="goBack()">退出</el-button>
+
+          <!--头像框-->
+          <div class="username">Akane</div>
+          <el-avatar :size="40" :src="user.circleUrl"></el-avatar>
+
         </el-header>
 
         <el-main><router-view/></el-main>
+
 
       </el-container>
     </el-container>
@@ -29,15 +27,20 @@
 </template>
 
 <script>
-import axios from "axios";
-import Nav from "@/components/admin/common/nav";
+import Nav from "@/components/admin/common/nav"; //左侧导航栏组件
+import breadcrumb from "@/components/admin/common/breadcrumb";//面包屑组件
 
 export default {
   name: "admin",
-  components: {Nav},
+  components: {Nav,breadcrumb},
   data(){
     return {
-      items:[]
+      items:[],
+      user:{
+        circleUrl: "/resources/background/avatar.jpg",
+        username:'Akane',
+      }
+
     }
   },
   created() {
@@ -47,25 +50,13 @@ export default {
     //this.getNav()
   },
   methods:{
-    submitForm(){
-      let test = 'sss'
 
-      axios.get('/hello',{
-        params:{
-          test:'123'
-        }
-      }).then(res =>{
-        console.log(res.data)
-        let {code,message} = res.data
-        console.log(code)
-      })
-    },
 
     // 返回到登录
     goBack(){
-      this.$router.push('/admin/login')
+      this.$router.push('/')
       //清除用户数据
-      sessionStorage.removeItem('username')
+      //sessionStorage.removeItem('account')
     },
 
     // 获取到导航栏的信息
@@ -83,7 +74,7 @@ export default {
 
 </script>
 
-<style lang="scss">
+<style lang="scss" >
 html,body{
   background-color: white;
   width: 100%;
@@ -94,28 +85,32 @@ html,body{
   color: #333;
   text-align: center;
 
+  .el-avatar{
+    float: right;
+    margin: 10px;
+  }
+
+  .username{
+    display: inline-block;
+    float: right;
+    line-height: 60px;
+    margin: 0px 10px;
+  }
+
   .el-button{
     float: right;
+    margin: 11px;
   }
+
 }
 
-//面包屑
-.el-breadcrumb{
-  line-height: 60px;
-  width: 500px;
-  float: left;
-}
 
 .el-main {
   background-color: #E9EEF3;
-  color: #333;
-  text-align: center;
-  line-height: 160px;
 }
 
 .el-container {
-  margin-bottom: 40px;
-  min-height: 1080px;
+  min-height: 844px;
 }
 
 

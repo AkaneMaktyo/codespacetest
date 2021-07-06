@@ -103,7 +103,9 @@ export default {
   },
   methods:{
     // 注册表单提交
+
     login(){
+      const that = this
       this.$refs.loginFormRef.validate((valid)=>{
         if(valid) {
           let account = this.user_login_form.account;
@@ -114,7 +116,10 @@ export default {
             'password': password,
           }).then(res => {
             if (res.data.code == 200) {
+              sessionStorage.setItem("account",res.data.data.account)
               this.$message.success('登录成功~');
+              console.log("准备跳转")
+              that.$router.push({name:'Index'})
             }else{
               this.$message.error('用户名或密码错误！');
             }

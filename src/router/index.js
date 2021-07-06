@@ -22,25 +22,31 @@ const routes = [
     name: 'Register',
     component: () => import('../views/front/Register')
   },
+
+  //  后台路由------------------------------------------------
   {
     path: '/admin',
     name: 'Admin',
     component: () => import('../views/admin/AdminHome'),
     redirect: '/admin/home',
+    meta:{ title: '首页'},
     children:[
       {
         path: '/admin/user',
         name: 'User',
+        meta:{ title: '用户管理'},
         component: () => import('../components/admin/user/user')
       },
       {
         path: '/admin/game',
-        name: 'User',
+        meta:{ title: '游戏管理'},
+        name: 'Game',
         component: () => import('../components/admin/game/game')
       },
       {
         path: '/admin/home',
         name: 'Home',
+        meta:{ title: '首页'},
         component: () => import('../components/admin/common/home')
       },
     ]
@@ -60,13 +66,17 @@ const router = new VueRouter({
 
 
 // 路由拦截 在跳转前执行,后续应该调用接口
-// router.beforeEach(function (to, from, next){
-//   if (!sessionStorage.getItem('username')) {
-//     if (to.path !== '/login'){
-//       next('/login')
-//     }
-//   }
-// })
+router.beforeEach(function (to, from, next){
+  if (!sessionStorage.getItem('account')) {
+    if (to.path !== '/admin/login'){
+      //这里权限还没做
+      next({name: 'adminLogin'})
+    } else {
+      next()
+    }
+  }
+  next()
+})
 
 
 export default router
