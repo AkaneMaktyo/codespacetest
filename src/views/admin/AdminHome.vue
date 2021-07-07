@@ -28,11 +28,10 @@
 
 <script>
 import Nav from "@/components/admin/common/nav"; //左侧导航栏组件
-import breadcrumb from "@/components/admin/common/breadcrumb";//面包屑组件
 
 export default {
   name: "admin",
-  components: {Nav,breadcrumb},
+  components: {Nav,},
   data(){
     return {
       items:[],

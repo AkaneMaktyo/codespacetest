@@ -33,3 +33,8 @@ a:hover{
 a:active{
     color: #ffffff;
 }
+
+/*解决el表格 表头对不齐*/
+.el-table th.gutter{
+    display: table-cell!important;
+}
