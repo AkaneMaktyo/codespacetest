@@ -69,7 +69,7 @@ export default {
         padding-top: 32px;
         width: 940px;
         height: 500px;
-        margin: -1px 482px;
+        margin: -1px 374px;
 
         //margin: 100px 100px 0 0;
       }

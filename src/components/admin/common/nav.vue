@@ -24,11 +24,25 @@ export default {
       items:[
           {
             "name": "首页",
-            "url": "/admin/home"
+            "url": "/admin"
           },
           {
             "name": "游戏管理",
-            "url": "/admin/game"
+            "url": "/admin/game",
+            "child": [
+              {
+                "name": "游戏列表",
+                "url": "/admin/game"
+              },
+              {
+                "name": "修改游戏",
+                "url": "/admin/editGame"
+              },
+              {
+                "name": "新增游戏",
+                "url": "/admin/AddGame"
+              }
+            ]
           },
           {
             "name": "用户管理",

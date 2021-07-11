@@ -54,7 +54,7 @@ export default {
     width: 210px;
     height: 800px;
     position: absolute;
-    margin: 24px 0 0 248px;
+    margin: 24px 0 0 140px;
     .classification_header{
 
       .classification_gift{

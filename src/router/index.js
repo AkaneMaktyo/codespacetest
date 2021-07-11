@@ -49,11 +49,23 @@ const routes = [
         meta:{ title: '首页'},
         component: () => import('../components/admin/common/home')
       },
+      {
+        path: '/admin/editGame',
+        name: 'EditGame',
+        meta:{ title: '修改游戏'},
+        component: () => import('../components/admin/game/editGame')
+      },
+      {
+        path: '/admin/AddGame',
+        name: 'AddGame',
+        meta:{ title: '新增游戏'},
+        component: () => import('../components/admin/game/AddGame')
+      },
     ]
   },
   {
     path: '/admin/login',
-    name: 'adminLogin',
+    name: 'AdminLogin',
     component: () => import('../components/admin/login')
   },
 
@@ -70,7 +82,7 @@ router.beforeEach(function (to, from, next){
   if (!sessionStorage.getItem('account')) {
     if (to.path !== '/admin/login'){
       //这里权限还没做
-      next({name: 'adminLogin'})
+      next({name: 'AdminLogin'})
     } else {
       next()
     }

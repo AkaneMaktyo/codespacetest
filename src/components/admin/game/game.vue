@@ -3,11 +3,11 @@
     <div class="edit_button">
       <el-input v-model="search" placeholder="请输入内容"></el-input>
       <el-button type="primary" icon="el-icon-search">搜索</el-button>
-      <el-button type="primary" class="right">新增游戏</el-button>
+      <el-button type="primary" class="right" @click="toAddGame()">新增游戏</el-button>
     </div>
     <el-table
         ref="filterTable"
-        :data="tableData"
+        :data="gameList"
         border
         highlight-current-row
         style="width: 100%">
@@ -114,17 +114,20 @@
 </template>
 
 <script>
+import editGame from "@/components/admin/game/editGame";
+
 export default {
   data() {
     return {
       search:'',
-      tableData: [
+      gameList: [
         {
           gameName: '糖豆人：终极挑战赛终极挑战赛终极挑战赛终极挑战赛',
           date: '2016-05-02',
           originalPrice: '61',
           discount: 0.9,
           currentPrice: 355,
+          description: '稍后第哦啊是丢啊是',
           class: '公司',
           img:'/resources/shrinkGame/勇者斗恶龙XI/勇者斗恶龙XI 5.jpg',
         },
@@ -184,6 +187,10 @@ export default {
     },
     handleEdit(index, row) {
       console.log(index,row);
+      this.$router.push({
+        name:'EditGame',
+        params: row
+      })
     },
     handleDelete(index, row) {
       console.log(index, row);
@@ -196,6 +203,11 @@ export default {
     },
     currentPage4(){
 
+    },
+    toAddGame(){
+      this.$router.push({
+        name:'AddGame',
+      })
     }
   }
 }
@@ -204,7 +216,7 @@ export default {
 <style lang="scss">
 
   .game{
-    box-shadow: 0 2px 12px 0 #cbcaca;
+    //box-shadow: 0 2px 12px 0 #cbcaca;
   }
 
   .el-table{
