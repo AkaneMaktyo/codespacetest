@@ -12,12 +12,7 @@
         <el-col :span="10">
           <el-form-item in label="分类">
             <el-select v-model="game.class" placeholder="请选择游戏分类">
-              <el-option label="动作" value="动作"></el-option>
-              <el-option label="休闲" value="休闲"></el-option>
-              <el-option label="冒险" value="冒险"></el-option>
-              <el-option label="解密" value="解密"></el-option>
-              <el-option label="第一人称射击" value="第一人称射击"></el-option>
-              <el-option label="角色扮演" value="角色扮演"></el-option>
+              <el-option :label="item.classifyName" :value="item.classifyName" v-for="(item,index) in classify"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
@@ -50,7 +45,7 @@
 
         <el-col :span="5">
           <el-form-item label="折扣">
-            <el-input-number v-model="game.discount" :step="0.05" @change="handleChange" :min="0" :max="1" class="price"></el-input-number>
+            <el-input-number v-model="game.discount" :step="0.05" @change="disscountChange" :min="0" :max="1" class="price"></el-input-number>
           </el-form-item>
         </el-col>
 
@@ -186,7 +181,7 @@ export default {
       Cover1:{'name':'largeCover'},
       Cover2:{'name':'middleCover'},
       Cover3:{'name':'smallCover'},
-
+      classify: [],
       largeCoverFile: '',
       middleCoverFile: '',
       smallCoverFile: '',
@@ -229,13 +224,16 @@ export default {
     }
   },
   methods: {
+
+    //表单提交
     onSubmit() {
       this.game.about = this.$refs.editor._content
       axios.post('/game/addGame',this.game).then((res)=>{
         console.log(res)
       })
     },
-    handleChange(value) {
+    //
+    disscountChange(value) {
       this.game.currentPrice = this.game.originalPrice * value
     },
     handleRemove(file, fileList) {
@@ -294,15 +292,21 @@ export default {
       }
       return isJPG && isLt2M;
     },
-
+    getClassify(){
+      this.axios.get('/getClassifyList').then((res)=>{
+        this.classify = res.data;
+      })
+    }
   },
   mounted() {
     addQuillTitle();
+    this.getClassify();
   }
 }
 </script>
 
 <style lang="scss">
+
   .addGame {
     background-color: white;
     padding: 40px 20px;
