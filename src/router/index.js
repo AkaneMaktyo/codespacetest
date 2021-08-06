@@ -39,8 +39,8 @@ const routes = [
       },
       {
         path: '/admin/game',
-        meta:{ title: '游戏管理'},
-        name: 'Game',
+        meta:{ title: '游戏列表'},
+        name: 'GameList',
         component: () => import('../components/admin/game/game')
       },
       {

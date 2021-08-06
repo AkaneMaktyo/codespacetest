@@ -18,11 +18,7 @@
         <!-- 下拉抽屉 -->
         <div class="nav_item_desktop">
           <div class="classification">游戏类型</div>
-          <div class="desktop">休闲</div>
-          <div class="desktop">体育</div>
-          <div class="desktop">冒险</div>
-          <div class="desktop">大型多人在线</div>
-          <div class="desktop">角色扮演</div>
+          <div class="desktop" v-for="(item,index) in classify">{{item.classifyName}}</div>
 
           <div class="hr"></div>
           <div class="desktop">更多热门标签</div>
@@ -42,7 +38,26 @@
 
 <script>
 export default {
-  name: "HomeNav"
+  name: "HomeNav",
+  data(){
+    return{
+      classify:[{
+        "classifyId": '',
+        "classifyName": ''
+      }],
+    }
+  },
+  methods:{
+    //获取全部分类
+    getClassify(){
+      this.axios.get('/getClassifyList').then((res)=>{
+        this.classify = res.data;
+      })
+    },
+  },
+  mounted() {
+    this.getClassify();
+  }
 }
 </script>
 
@@ -96,7 +111,7 @@ export default {
           text-align: left;
           color: black;
           font-size: 12px;
-          width: 110px;
+          width: 130px;
           //box-shadow: 0 0 3px rgba(0,0,0,0.4);
           box-shadow:0 0 12px #000000;
           background-color: #d6e0e8;
@@ -104,11 +119,11 @@ export default {
           box-sizing: border-box;
           z-index: 999;
           .desktop{
-            width: 100px;
+            width: 110px;
             height: 30px;
             line-height: 30px;
             margin: 0 auto;
-            text-indent: 11px;
+            text-indent: 6px;
             transition: all 0.25s;
             &:hover{
               cursor: pointer;

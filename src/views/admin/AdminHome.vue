@@ -10,7 +10,7 @@
         <el-header>
 
           <!-- 退出 -->
-          <el-button type="primary" @click="goBack()">退出</el-button>
+          <el-button type="primary" @click="backIndex()">退出</el-button>
 
           <!--头像框-->
           <div class="username">Akane</div>
@@ -18,7 +18,12 @@
 
         </el-header>
 
-        <el-main><router-view/></el-main>
+        <el-main>
+<!--        <el-page-header @back="goBack"  content="详情页面"></el-page-header>-->
+<!--          <keep-alive>-->
+            <router-view/>
+<!--          </keep-alive>-->
+        </el-main>
 
 
       </el-container>
@@ -52,10 +57,15 @@ export default {
 
 
     // 返回到登录
-    goBack(){
+    backIndex(){
       this.$router.push('/')
       //清除用户数据
       //sessionStorage.removeItem('account')
+    },
+
+    //返回上一步
+    goBack(){
+      history.back()
     },
 
     // 获取到导航栏的信息
@@ -103,7 +113,6 @@ html,body{
 
 }
 
-
 .el-main {
   background-color: #E9EEF3;
 }
@@ -112,5 +121,11 @@ html,body{
   min-height: 844px;
 }
 
+.el-page-header{
+  background-color: white;
+  height: 60px;
+  line-height: 60px;
+  padding-left: 15px;
+}
 
 </style>

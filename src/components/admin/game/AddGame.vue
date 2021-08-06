@@ -11,7 +11,7 @@
 
         <el-col :span="10">
           <el-form-item in label="分类">
-            <el-select v-model="game.class" placeholder="请选择游戏分类">
+            <el-select v-model="game.classify" placeholder="请选择游戏分类">
               <el-option :label="item.classifyName" :value="item.classifyName" v-for="(item,index) in classify"></el-option>
             </el-select>
           </el-form-item>
@@ -19,7 +19,18 @@
       </el-row>
 
       <el-form-item label="游戏标签" style="width: 762px">
-        <el-input v-model="game.tag" maxlength="30" placeholder="多个标签请以#分隔标签"></el-input>
+        <el-select
+            v-model="game.tags"
+            multiple
+            filterable
+            allow-create
+            default-first-option
+            placeholder="请选择文章标签">
+          <el-option
+              v-for="item in options"
+              :value="item">
+          </el-option>
+        </el-select>
       </el-form-item>
 
       <el-row>
@@ -39,23 +50,25 @@
       <el-row>
         <el-col :span="3">
           <el-form-item label="发布价" prop="originalPrice">
-            <el-input  v-model="game.originalPrice" class="price"></el-input>
+            <el-input controls=false  v-model.number="game.originalPrice" class="price"></el-input>
           </el-form-item>
         </el-col>
 
         <el-col :span="5">
           <el-form-item label="折扣">
-            <el-input-number v-model="game.discount" :step="0.05" @change="disscountChange" :min="0" :max="1" class="price"></el-input-number>
+            <el-input-number v-model="game.discount" :step="0.05" :min="0" :max="1" class="price"></el-input-number>
           </el-form-item>
         </el-col>
 
         <el-col :span="3">
           <el-form-item label="现价">
-            <el-input v-model="game.currentPrice.toFixed(2)"  :disabled="true" class="price"></el-input>
+            <el-input v-model="game.originalPrice*game.discount"  :disabled="true" class="price"></el-input>
           </el-form-item>
         </el-col>
 
       </el-row>
+
+
 
       <el-form-item label="发布日期">
         <el-date-picker
@@ -76,8 +89,8 @@
                 :data=Cover1
                 :on-success="coverSuccess"
                 :before-upload="beforeUpload">
-              <img v-if="largeCoverFile" :src="largeCoverFile" class="avatar">
-              <i v-if="!largeCoverFile" class="el-icon-plus avatar-uploader-icon"></i>
+              <img v-if="game.largeCover" :src="game.largeCover" class="avatar">
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
         </el-col>
@@ -91,7 +104,7 @@
                 :data=Cover2
                 :on-success="coverSuccess"
                 :before-upload="beforeUpload">
-              <img v-if="middleCoverFile" :src="middleCoverFile" class="avatar">
+              <img v-if="game.middleCover" :src="game.middleCover" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
@@ -106,7 +119,7 @@
                 :data=Cover3
                 :on-success="coverSuccess"
                 :before-upload="beforeUpload">
-              <img v-if="smallCoverFile" :src="smallCoverFile" class="avatar">
+              <img v-if="game.smallCover" :src="game.smallCover" class="avatar">
               <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
           </el-form-item>
@@ -118,7 +131,9 @@
         <el-upload
             :action="url+uploadUrl"
             list-type="picture-card"
+            :file-list="fileList"
             :on-success="gameImageSuccess"
+            :multiple = true
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove">
           <i class="el-icon-plus"></i>
@@ -135,7 +150,7 @@
             action="/upload"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
-            :file-list="fileList"
+            :file-list="fileListVideo"
             :auto-upload="false">
           <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
           <el-button style="margin-left: 10px;" size="small" type="success" @click="submitUpload">上传到服务器</el-button>
@@ -145,12 +160,12 @@
 
 
       <el-form-item label="简介" >
-        <el-input v-model="game.description" autosize type="textarea"></el-input>
+        <el-input v-model="game.introduction" autosize type="textarea"></el-input>
       </el-form-item>
 
       <!--富文本编辑器-->
       <el-form-item label="关于游戏">
-        <quill-editor id="editor" ref="editor">
+        <quill-editor v-model="game.about" id="editor" ref="editor">
         </quill-editor>
       </el-form-item>
 
@@ -166,8 +181,6 @@
 import {addQuillTitle} from "@/assets/js/quill-title";
 import axios from "axios";
 import {Base64} from "js-base64";
-
-
 
 export default {
   name: "AddGame",
@@ -185,14 +198,9 @@ export default {
       largeCoverFile: '',
       middleCoverFile: '',
       smallCoverFile: '',
-      fileList: [
-        {
-          name: 'food.jpeg',
-          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'},
-        {
-          name: 'food2.jpeg',
-          url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'}
-      ],
+      imageArray:[],
+      fileList: [],     //用于游戏图片回显
+      fileListVideo:[], //视频文件
       game: {
         gameName: '',
         date: '',
@@ -218,9 +226,10 @@ export default {
         ],
         originalPrice: [
           { required: true, message: '请输入发布价', trigger: 'blur' },
-          { type:"number" ,min: 0, max: 999, message: '游戏价格要在0到999元', trigger: 'blur' },
+          { type:"number" , max:999 ,min: 0, message: '游戏价格要在0到999元', trigger: 'blur' },
         ],
-      }
+      },
+      options: [],
     }
   },
   methods: {
@@ -228,16 +237,31 @@ export default {
     //表单提交
     onSubmit() {
       this.game.about = this.$refs.editor._content
-      axios.post('/game/addGame',this.game).then((res)=>{
-        console.log(res)
+      //处理tags，将array转成#分隔的字符串
+      this.game.tags = this.game.tags.toString();
+      axios.post('/game/savaOrUpdate',this.game).then((res)=>{
+        this.$message.success(res.data.message)
+        this.$router.push({name:'GameList'})
       })
     },
-    //
-    disscountChange(value) {
-      this.game.currentPrice = this.game.originalPrice * value
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
+    //删除游戏图片
+    handleRemove(file) {
+      //将回显的fileList中对应的图片删除
+      for (let i = 0; i < this.fileList.length; i++) {
+        if ( this.fileList[i].uid === file.uid ){
+          this.fileList.splice(i,1)
+        }
+      }
+      this.game.gameImage = ""
+      //重新生成要传到后端图片列表地址
+      for (let i = 0; i < this.fileList.length; i++) {
+        if (this.game.gameImage == ""){
+          this.game.gameImage += this.fileList[i].url
+        } else {
+          this.game.gameImage += "#" + this.fileList[i].url
+        }
+      }
+
     },
     handlePictureCardPreview(file) {
       console.log(file)
@@ -256,11 +280,11 @@ export default {
 
       const name = res.data.name
       const downloadUrl = res.data.downloadUrl
-      if (name == "largeCover"){
+      if (name === "largeCover"){
         this.largeCoverFile = URL.createObjectURL(file.raw);
         this.game.largeCover = downloadUrl;
       }
-      else if (name=="middleCover"){
+      else if (name === "middleCover"){
         this.middleCoverFile = URL.createObjectURL(file.raw);
         this.game.middleCover = downloadUrl;
       }
@@ -273,13 +297,14 @@ export default {
     //游戏图片上传成功
     gameImageSuccess(res){
 
-      if (this.game.gameImage == ""){
+      if (this.game.gameImage === ""){
         this.game.gameImage += res.data.downloadUrl
       } else {
         this.game.gameImage += "#"+res.data.downloadUrl
       }
     },
 
+    //上传前判断
     beforeUpload(file) {
       const isJPG = file.type === 'image/jpeg';
       const isLt2M = file.size / 1024 / 1024 < 2;
@@ -292,25 +317,34 @@ export default {
       }
       return isJPG && isLt2M;
     },
+
+    //获取全部分类
     getClassify(){
       this.axios.get('/getClassifyList').then((res)=>{
         this.classify = res.data;
+      })
+    },
+    //获取全部标签
+    getTags(){
+      this.axios.get('tags/getTags').then((res)=>{
+        this.options = res.data.split(",");
       })
     }
   },
   mounted() {
     addQuillTitle();
     this.getClassify();
+    this.getTags();
   }
 }
 </script>
 
 <style lang="scss">
 
-  .addGame {
-    background-color: white;
-    padding: 40px 20px;
-  }
+.addGame {
+  background-color: white;
+  padding: 40px 20px;
+
   .quill-editor{
     height: 300px;
   }
@@ -337,4 +371,8 @@ export default {
     height: 146px;
     display: block;
   }
+
+
+}
+
 </style>
